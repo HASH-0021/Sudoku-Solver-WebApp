@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/Sudoku-Solver-WebApp/static/css/main.d64f345a.css",
+    "main.js": "/Sudoku-Solver-WebApp/static/js/main.962820cc.js",
+    "static/js/787.4f1c3a41.chunk.js": "/Sudoku-Solver-WebApp/static/js/787.4f1c3a41.chunk.js",
+    "index.html": "/Sudoku-Solver-WebApp/index.html",
+    "main.d64f345a.css.map": "/Sudoku-Solver-WebApp/static/css/main.d64f345a.css.map",
+    "main.962820cc.js.map": "/Sudoku-Solver-WebApp/static/js/main.962820cc.js.map",
+    "787.4f1c3a41.chunk.js.map": "/Sudoku-Solver-WebApp/static/js/787.4f1c3a41.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d64f345a.css",
+    "static/js/main.962820cc.js"
+  ]
+}

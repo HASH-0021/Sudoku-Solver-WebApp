@@ -1,0 +1,13 @@
+.app-dark {
+  text-align: center;
+  background-color: black;
+  color: white;
+}
+.app-light {
+  text-align: center;
+  background-color: white;
+  color: black;
+}
+h1 {
+  margin: 0;
+}

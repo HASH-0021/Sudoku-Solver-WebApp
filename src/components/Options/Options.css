@@ -1,0 +1,68 @@
+.options {
+  margin: 5px;
+}
+.speed-section {
+  width: 530px;
+  margin: 5px auto;
+  display: grid;
+  grid-template-columns: 25% 15% 60%;
+}
+#speed-slider {
+  -webkit-appearance: none;
+  position: relative;
+  top: 5px;
+  height: 10px;
+  background: linear-gradient(to right, green 0%, green 50%, #ddd 50%, #ddd 100%);
+  border-radius: 10px;
+  outline: none;
+  opacity: 0.85;
+  transition: opacity 0.2s;
+}
+
+#speed-slider:hover {
+  opacity: 1;
+}
+
+#speed-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background-color: #4CAF50;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+#speed-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background-color: #4CAF50;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.buttons-light {
+	color: black;
+	margin: 0 2px;
+	background-color: transparent;
+	border: 3px solid black;
+	border-radius: 7px;
+}
+
+.buttons-light:hover {
+	background-color: black;
+	color: white;
+}
+
+.buttons-dark {
+	color: white;
+	margin: 0 2px;
+	background-color: transparent;
+	border: 3px solid white;
+	border-radius: 7px;
+}
+
+.buttons-dark:hover {
+	background-color: white;
+	color: black;
+}

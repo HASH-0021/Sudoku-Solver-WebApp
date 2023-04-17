@@ -1,7 +1,10 @@
 import React from "react";
 import "./Cell.css";
 
-const Cell = ({cellchange, cellvalue, darkmodevalue}) => {
+const Cell = ({cellchange, cellvalue, darkmodevalue, boxindex, cellindex}) => {
+	const rowNo = Math.floor(boxindex/3)*3 + Math.floor(cellindex/3);
+	const colNo = (boxindex%3)*3 + cellindex%3;
+	const cellId = `R${rowNo}C${colNo}`;
 	const ref = React.useRef(null);
 	const [cellInput,setCellInput] = React.useState("cell-input-dark");
 	const [cellInputBold,setCellInputBold] = React.useState("cell-input-bold-dark");
@@ -36,7 +39,7 @@ const Cell = ({cellchange, cellvalue, darkmodevalue}) => {
 		}else{
 			setValue(cellvalue);
 		}
-	}, [cellvalue]);
+	}, [cellvalue,cellInput]);
 	const handleKeyPress = (event) => {
 		const charCode = event.which || event.keyCode;
 		if (charCode < 49 || charCode > 57) {
@@ -48,17 +51,18 @@ const Cell = ({cellchange, cellvalue, darkmodevalue}) => {
 		if (updatedValue > 0 && updatedValue < 10) {
 			setCellClassName(cellInputBold);
 			setValue(updatedValue);
-			cellchange(updatedValue);
+			cellchange(updatedValue,rowNo,colNo);
 		}else {
 			setCellClassName(cellInput);
 			setValue(null);
-			cellchange('-');
+			cellchange('-',rowNo,colNo);
 		}
 	}
 	return (
 		<input type = "text"
 				ref = {ref}
 				className = {cellClassName}
+				id = {cellId}
 				maxLength="1"
 				value={value || ''}
 				onKeyPress={handleKeyPress}

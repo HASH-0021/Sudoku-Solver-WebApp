@@ -1,7 +1,7 @@
 import React from "react";
 import Grid from "../components/Grid/Grid";
-import Buttons from "../components/Buttons/Buttons";
-import Info from "../components/Info/Info";
+import Options from "../components/Options/Options";
+import Details from "../components/Details/Details";
 import DarkMode from "../components/DarkMode/DarkMode";
 import './App.css';
 
@@ -21,47 +21,22 @@ class App extends React.Component {
                       ];
     this.state = {
       grid  : this.emptyGrid.map(arr => [...arr]),
-      previousGrid  : [],
+      puzzleGrid  : this.emptyGrid.map(arr => [...arr]),
       timeTaken : -2,
-      darkMode  : true
+      darkMode  : true,
+      slider    : false
     };
+    this.waitTime = 50;
   }
-  onCellChange(value,boxIndex,cellIndex) {
+  onCellChange(value,rowNo,colNo) {
     let updatedGrid = this.state.grid.map(arr => [...arr]);
-    let rowOffset = 0, colOffset = 0, rowNo = 0, colNo = 0;
-    if (cellIndex === 0 || cellIndex === 1 || cellIndex === 2) {
-      rowOffset = 0;
-    }else if (cellIndex === 3 || cellIndex === 4 || cellIndex === 5) {
-      rowOffset = 1;
-    }else if (cellIndex === 6 || cellIndex === 7 || cellIndex === 8) {
-      rowOffset = 2;
-    }
-    if (boxIndex === 0 || boxIndex === 1 || boxIndex === 2) {
-      rowNo = rowOffset;
-    }else if (boxIndex === 3 || boxIndex === 4 || boxIndex === 5) {
-      rowNo = 3+rowOffset;
-    }else if (boxIndex === 6 || boxIndex === 7 || boxIndex === 8) {
-      rowNo = 6+rowOffset;
-    }
-    if (cellIndex === 0 || cellIndex === 3 || cellIndex === 6) {
-      colOffset = 0;
-    }else if (cellIndex === 1 || cellIndex === 4 || cellIndex === 7) {
-      colOffset = 1;
-    }else if (cellIndex === 2 || cellIndex === 5 || cellIndex === 8) {
-      colOffset = 2;
-    }
-    if (boxIndex === 0 || boxIndex === 3 || boxIndex === 6) {
-      colNo = colOffset;
-    }else if (boxIndex === 1 || boxIndex === 4 || boxIndex === 7) {
-      colNo = 3+colOffset;
-    }else if (boxIndex === 2 || boxIndex === 5 || boxIndex === 8) {
-      colNo = 6+colOffset;
-    }
+    let updatedPuzzleGrid = this.state.puzzleGrid.map(arr => [...arr]);
     updatedGrid[rowNo][colNo] = value;
+    updatedPuzzleGrid[rowNo][colNo] = value;
     this.setState(
       {
         grid : updatedGrid,
-        previousGrid : [],
+        puzzleGrid : updatedPuzzleGrid,
         timeTaken : -2
       }
     );
@@ -103,7 +78,7 @@ class App extends React.Component {
     };
     return true;
   }
-  solveSudoku = (event) => {
+  solveSudoku = () => {
     const validate = (rowNo,colNo,sudoku) => {
       for (let i = 0; i < 9; i++) {
         if (rowNo !== i && sudoku[rowNo][colNo] === sudoku[i][colNo]) {
@@ -140,7 +115,6 @@ class App extends React.Component {
       return true;
     }
     let sudoku = this.state.grid.map(arr => [...arr]);
-    this.setState({previousGrid : sudoku.map(arr => [...arr])});
     const startTime = Date.now();
     solve(sudoku);
     const endTime = Date.now();
@@ -150,6 +124,71 @@ class App extends React.Component {
         timeTaken : (endTime-startTime)/1000
       }
     );
+  }
+  speedAdjust = (event) => {
+    const sliderElement = document.getElementById("speed-slider");
+    const sliderValue = event.target.value;
+    sliderElement.style.background = `linear-gradient(to right, green 0%, green calc(1% * ${sliderValue}), #ddd calc(1% * ${sliderValue}), #ddd 100%)`;
+    this.waitTime = 100-sliderValue;
+  }
+  visualizeSolution = async () => {
+    const wait = () => {
+      return new Promise(resolve => setTimeout(resolve,this.waitTime));
+    }
+    const validate = (rowNo,colNo,sudoku) => {
+      for (let i = 0; i < 9; i++) {
+        if (rowNo !== i && sudoku[rowNo][colNo] === sudoku[i][colNo]) {
+          return false;
+        };
+      };
+      const rowStart = Math.floor(rowNo/3)*3;
+      const colStart = Math.floor(colNo/3)*3;
+      for (let i = rowStart; i < rowStart+3; i++) {
+        for (let j = colStart; j < colStart+3; j++) {
+          if (rowNo !== i && colNo !== j && sudoku[rowNo][colNo] === sudoku[i][j]) {
+            return false;
+          };
+        };
+      };
+      return true;
+    }
+    const solve = async (sudoku) => {
+      for (let rowNo = 0; rowNo < 9; rowNo++) {
+        let colNo = sudoku[rowNo].indexOf('-');
+        if (colNo !== -1) {
+          for (let num = 1; num < 10; num++) {
+            if (sudoku[rowNo].indexOf(num) === -1) {
+              sudoku[rowNo][colNo] = num;
+              if (this.waitTime) {
+                document.getElementById(`R${rowNo}C${colNo}`).value = num;
+                await wait();
+              }else {
+                return false;
+              }
+              if (validate(rowNo,colNo,sudoku) && await solve(sudoku)) {
+                return true;
+              };
+            };
+          };
+          sudoku[rowNo][colNo] = '-';
+          if (this.waitTime) {
+            document.getElementById(`R${rowNo}C${colNo}`).value = '';
+            await wait();
+          }          
+          return false;
+        };
+      };
+      return true;
+    }
+    const startTime = Date.now();
+    let sudoku = this.state.grid.map(arr => [...arr]);
+    await this.setState({slider : true});
+    await solve(sudoku);
+    this.waitTime ? this.setState({grid : sudoku}) : this.solveSudoku();
+    this.setState({slider : false});
+    const endTime = Date.now();
+    console.log((endTime-startTime)/1000);
+    this.waitTime = 50;
   }
   blockify = (grid) => {
     let blockifiedGrid = [];
@@ -169,8 +208,7 @@ class App extends React.Component {
   clearSolution = (event) => {
     this.setState(
       {
-        grid : this.state.previousGrid.map(arr => [...arr]),
-        previousGrid : [],
+        grid : this.state.puzzleGrid.map(arr => [...arr]),
         timeTaken: -2
       }
     );
@@ -179,7 +217,7 @@ class App extends React.Component {
     this.setState(
       {
         grid : this.emptyGrid.map(arr => [...arr]),
-        previousGrid : [],
+        puzzleGrid : this.emptyGrid.map(arr => [...arr]),
         timeTaken : -2
       }
     );
@@ -189,8 +227,9 @@ class App extends React.Component {
   }
   render() {
     let blockifiedGrid = this.blockify(this.state.grid);
-    let hasDigits = JSON.stringify(this.state.grid) === JSON.stringify(this.emptyGrid) ? false : true;
-    let completeGrid = JSON.stringify(this.state.grid).indexOf('-') === -1 ? true : false;
+    let hasDigits = JSON.stringify(this.state.grid) !== JSON.stringify(this.emptyGrid);
+    let completeGrid = JSON.stringify(this.state.grid).indexOf('-') === -1;
+    let notSolved = JSON.stringify(this.state.grid) === JSON.stringify(this.state.puzzleGrid);
     let validGrid = this.isValid(this.state.grid.map(arr => [...arr]));
     let appClassName = "";
     if (this.state.darkMode) {
@@ -202,24 +241,27 @@ class App extends React.Component {
       <div className={appClassName}>
         <h1>Sudoku Solver WebApp</h1>
         <Grid 
-          gridchange = {(value,boxIndex,cellIndex) => this.onCellChange(value,boxIndex,cellIndex)} 
+          gridchange = {(value,rowNo,colNo) => this.onCellChange(value,rowNo,colNo)} 
           blockifiedgrid = {blockifiedGrid}
           darkmodevalue = {this.state.darkMode}
         />
-        <Buttons 
+        <Options 
           solvesudoku = {this.solveSudoku} 
+          visualizesolution = {this.visualizeSolution}
           clearsolution = {this.clearSolution} 
           cleargrid = {this.clearGrid} 
-          previousgrid = {this.state.previousGrid} 
+          notsolved = {notSolved} 
           gridhasdigits = {hasDigits}
           completegrid = {completeGrid}
           validgrid = {validGrid}
           darkmodevalue = {this.state.darkMode}
+          sliderstate = {this.state.slider}
+          speedadjust = {this.speedAdjust}
         />
         <section>
-          <Info timetaken = {this.state.timeTaken} validgrid = {validGrid}/>
+          <Details timetaken = {this.state.timeTaken} validgrid = {validGrid}/>
         </section>
-        <DarkMode setdarkmode = {this.setDarkMode} darkmodevalue = {this.state.darkMode}/>
+        <DarkMode setdarkmode = {this.setDarkMode} darkmodevalue = {this.state.darkMode} sliderstate = {this.state.slider}/>
       </div>
     );
   }

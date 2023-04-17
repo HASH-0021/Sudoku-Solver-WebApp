@@ -4,9 +4,10 @@ import "./Grid.css";
 
 const Grid = ({gridchange, blockifiedgrid, darkmodevalue}) => {
 	const boxes = blockifiedgrid.map((block,index) => <Box 
-															boxchange = {(value,cellIndex) => gridchange(value,index,cellIndex)}
+															boxchange = {(value,rowNo,colNo) => gridchange(value,rowNo,colNo)}
 															block = {block}
 															darkmodevalue = {darkmodevalue}
+															boxindex = {index}
 															/>);
 	const [gridClassName,setGridClassName] = React.useState("");
 	React.useEffect(() => {

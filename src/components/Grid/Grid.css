@@ -1,7 +1,7 @@
 .grid-light {
 	width: 504px;
 	height: 504px;
-	margin: 0 auto;
+	margin: 5px auto;
 	display: grid;
 	grid-template-columns: 33.33% 33.33% 33.33%;
 	grid-template-rows: 33.33% 33.33% 33.33%;
@@ -13,7 +13,7 @@
 .grid-dark {
 	width: 504px;
 	height: 504px;
-	margin: 0 auto;
+	margin: 5px auto;
 	display: grid;
 	grid-template-columns: 33.33% 33.33% 33.33%;
 	grid-template-rows: 33.33% 33.33% 33.33%;

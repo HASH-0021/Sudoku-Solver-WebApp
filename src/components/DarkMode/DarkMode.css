@@ -1,8 +1,9 @@
 .dark-mode-section {
-  width: 150px;
+  width: 200px;
   display: grid;
-  grid-template-columns: 60% 40%;
+  grid-template-columns: 50% 20% 30%;
   margin: 0 auto;
+  padding: 3px;
 }
 
 .text-dark {

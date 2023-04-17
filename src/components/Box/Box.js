@@ -2,11 +2,13 @@ import React from "react";
 import Cell from "../Cell/Cell";
 import "./Box.css";
 
-const Box = ({boxchange, block, darkmodevalue}) => {
+const Box = ({boxchange, block, darkmodevalue, boxindex}) => {
 	const cells = block.map((cellValue,index) => <Cell 
-													cellchange = {(value) => boxchange(value,index)}
+													cellchange = {(value,rowNo,colNo) => boxchange(value,rowNo,colNo)}
 													cellvalue = {cellValue}
 													darkmodevalue = {darkmodevalue}
+													boxindex = {boxindex}
+													cellindex = {index}
 													/>);
 	const [boxClassName,setBoxClassName] = React.useState("");
 	React.useEffect(() => {

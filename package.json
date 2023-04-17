@@ -1,5 +1,6 @@
 {
   "name": "sudoku-solver-webapp",
+  "homepage": "https://hash-0021.github.io/Sudoku-Solver-WebApp/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

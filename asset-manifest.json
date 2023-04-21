@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/Sudoku-Solver-WebApp/static/css/main.003e76ca.css",
-    "main.js": "/Sudoku-Solver-WebApp/static/js/main.a2d5eed4.js",
+    "main.css": "/Sudoku-Solver-WebApp/static/css/main.3bb901f2.css",
+    "main.js": "/Sudoku-Solver-WebApp/static/js/main.afe6c176.js",
     "static/js/787.4f1c3a41.chunk.js": "/Sudoku-Solver-WebApp/static/js/787.4f1c3a41.chunk.js",
     "index.html": "/Sudoku-Solver-WebApp/index.html",
-    "main.003e76ca.css.map": "/Sudoku-Solver-WebApp/static/css/main.003e76ca.css.map",
-    "main.a2d5eed4.js.map": "/Sudoku-Solver-WebApp/static/js/main.a2d5eed4.js.map",
+    "main.3bb901f2.css.map": "/Sudoku-Solver-WebApp/static/css/main.3bb901f2.css.map",
+    "main.afe6c176.js.map": "/Sudoku-Solver-WebApp/static/js/main.afe6c176.js.map",
     "787.4f1c3a41.chunk.js.map": "/Sudoku-Solver-WebApp/static/js/787.4f1c3a41.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.003e76ca.css",
-    "static/js/main.a2d5eed4.js"
+    "static/css/main.3bb901f2.css",
+    "static/js/main.afe6c176.js"
   ]
 }

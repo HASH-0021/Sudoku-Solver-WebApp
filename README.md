@@ -8,7 +8,7 @@ Webapp to solve any valid sudoku grid. This webapp is created using **ReactJS**.
   - Options to adjust the speed of visualization.
 - Option to remove the solved part of the sudoku grid.
 - Option to clear the entire grid.
-- Option to populate the sudoku grid from a `.txt` file. *(Check the constraints [here](README.md#L35))*
+- Option to populate the sudoku grid from a `.txt` file.
 - Option to view info about the app.
 - Current status of the sudoku grid is available.
 - **Dark mode** option is available to toggle between light theme and dark theme. *(Default is set to dark theme)*

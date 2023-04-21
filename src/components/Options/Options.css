@@ -1,12 +1,31 @@
 .options {
   margin: 5px;
 }
+
 .speed-section {
-  width: 530px;
+  width: 400px;
   margin: 5px auto;
   display: grid;
   grid-template-columns: 25% 15% 60%;
 }
+
+.speed-options {
+  display: grid;
+  grid-template-columns: 10% 80% 10%;
+}
+
+#minus-button, #plus-button {
+  padding: 0;
+}
+
+.blocked-button {
+  background-color: #939393;
+  color: white;
+  margin: 0 2px;
+  border: 3px solid #939393;
+  border-radius: 7px;
+}
+
 #speed-slider {
   -webkit-appearance: none;
   position: relative;
@@ -65,4 +84,13 @@
 .buttons-dark:hover {
 	background-color: white;
 	color: black;
+}
+
+#fileInput {
+  display: none;
+}
+
+.info-button {
+  border-radius: 47%;
+  font-weight: bold;
 }

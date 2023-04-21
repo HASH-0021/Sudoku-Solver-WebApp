@@ -6,7 +6,18 @@ import DarkMode from "../components/DarkMode/DarkMode";
 import './App.css';
 
 class App extends React.Component {
+
   constructor() {
+
+    // Initializing some variables. State variables helps to re-render the app whenever there is a change with them.
+    // "emptyGrid" variable stores the empty state of the grid.
+    // State variable "grid" stores the current state of the sudoku grid.
+    // State variable "puzzleGrid" stores the question/grid that needs to be solved.
+    // State variable "timeTaken" stores time taken to solve the sudoku / stores a value which represents current state of sudoku grid.
+    // State variable "darkMode" stores the current state of dark mode.
+    // State variable "slider" stores the current state of speed slider whether it should be visible or not.
+    // "waitTime" variable stores the delay time between each new operation of visualization.
+
     super();
     this.emptyGrid = [
                         ['-','-','-','-','-','-','-','-','-'],
@@ -20,15 +31,19 @@ class App extends React.Component {
                         ['-','-','-','-','-','-','-','-','-']
                       ];
     this.state = {
-      grid  : this.emptyGrid.map(arr => [...arr]),
-      puzzleGrid  : this.emptyGrid.map(arr => [...arr]),
-      timeTaken : -2,
-      darkMode  : true,
-      slider    : false
-    };
+                    grid  : this.emptyGrid.map(arr => [...arr]),
+                    puzzleGrid  : this.emptyGrid.map(arr => [...arr]),
+                    timeTaken : -2,
+                    darkMode  : true,
+                    slider    : false
+                  };
     this.waitTime = 50;
   }
+
   onCellChange(value,rowNo,colNo) {
+
+    // This function updates the sudoku grid with value at particular row and column.
+
     let updatedGrid = this.state.grid.map(arr => [...arr]);
     let updatedPuzzleGrid = this.state.puzzleGrid.map(arr => [...arr]);
     updatedGrid[rowNo][colNo] = value;
@@ -41,7 +56,12 @@ class App extends React.Component {
       }
     );
   }
+
   isValid = (sudoku) => {
+
+    // This function checks whether the given sudoku is valid or not (i.e. whether it obeys the rules of sudoku.).
+    // This returns true if given sudoku is valid otherwise false.
+
     for (let i = 0; i < 9; i++) {
       let row = sudoku[i];
       for (let j = 0; j < 9; j++) {
@@ -78,7 +98,14 @@ class App extends React.Component {
     };
     return true;
   }
+
   solveSudoku = () => {
+
+    // This function solves the sudoku grid, updates the grid with solution and changes the status using time taken to solve.
+    // "validate" function checks whether the sudoku given is valid or not regarding a particular cell.
+    // "solve" function is recursive backtracking function. It puts a number in empty position ('-') of "sudoku" variable at each of its function call.
+    // "startTime" and "endTime" variables helps to track the time taken to solve the sudoku grid.
+
     const validate = (rowNo,colNo,sudoku) => {
       for (let i = 0; i < 9; i++) {
         if (rowNo !== i && sudoku[rowNo][colNo] === sudoku[i][colNo]) {
@@ -125,13 +152,27 @@ class App extends React.Component {
       }
     );
   }
-  speedAdjust = (event) => {
+
+  speedAdjust = (sliderValue) => {
+
+    // This function adjusts speed slider element and wait time according to slider value during visualization.
+    // Wait time is inverse of visualization speed.
+
     const sliderElement = document.getElementById("speed-slider");
-    const sliderValue = event.target.value;
     sliderElement.style.background = `linear-gradient(to right, green 0%, green calc(1% * ${sliderValue}), #ddd calc(1% * ${sliderValue}), #ddd 100%)`;
     this.waitTime = 100-sliderValue;
   }
+
   visualizeSolution = async () => {
+
+    // This function visualizes the solution in the sudoku grid.
+    // "wait" function returns a Promise with setTimeout. This will return only after "waitTime" milliseconds are completed.
+    // "validate" function checks whether the sudoku given is valid or not regarding a particular cell.
+    // "solve" function is recursive backtracking function. It puts a number in empty position ('-') of both "sudoku" variable and actual sudoku grid at each of its function call.
+    // During visualization, all the cells are made uneditable and the state variable "slider" is set to true.
+    // When the speed is changed to '100' the function switches to "solveSudoku" function to give the solution as fast as possible.
+    // "waitTime" variable is changed back to '50' after visualization.
+
     const wait = () => {
       return new Promise(resolve => setTimeout(resolve,this.waitTime));
     }
@@ -180,17 +221,26 @@ class App extends React.Component {
       };
       return true;
     }
-    const startTime = Date.now();
+    let cells = document.getElementsByClassName("cell");
+    for (let cell of cells) {
+      cell.readOnly = true;
+    }
     let sudoku = this.state.grid.map(arr => [...arr]);
     await this.setState({slider : true});
     await solve(sudoku);
     this.waitTime ? this.setState({grid : sudoku}) : this.solveSudoku();
     this.setState({slider : false});
-    const endTime = Date.now();
-    console.log((endTime-startTime)/1000);
     this.waitTime = 50;
+    for (let cell of cells) {
+      cell.readOnly = false;
+    }
   }
+
   blockify = (grid) => {
+
+    // This function returns a blockified grid from normal grid.
+    // At the end, "blockifiedGrid" variable contains blocks, each in the form of an array. Each block array contains cells.
+
     let blockifiedGrid = [];
     for (let rowStart = 0; rowStart < 9; rowStart += 3) {
       for (let colStart = 0; colStart < 9; colStart += 3) {
@@ -205,7 +255,11 @@ class App extends React.Component {
     }
     return blockifiedGrid.map(arr => [...arr]);
   }
-  clearSolution = (event) => {
+
+  clearSolution = () => {
+
+    // This function makes the current sudoku grid contain only puzzle grid. This removes solved part of the sudoku grid.
+
     this.setState(
       {
         grid : this.state.puzzleGrid.map(arr => [...arr]),
@@ -213,7 +267,12 @@ class App extends React.Component {
       }
     );
   }
-  clearGrid = (event) => {
+
+  clearGrid = () => {
+
+    // This function completely removes the sudoku grid.
+    // This also resets "puzzleGrid" variable to empty grid.
+
     this.setState(
       {
         grid : this.emptyGrid.map(arr => [...arr]),
@@ -222,49 +281,82 @@ class App extends React.Component {
       }
     );
   }
-  setDarkMode = (value) => {
-    this.setState({darkMode : value})
+
+  updateSudokuGrid = (uploadedGrid) => {
+
+    // This function updates the sudoku grid with grid in "uploadedGrid" variable.
+    // This will assign the grid in "uploadedGrid" variable to "puzzleGrid" variable.
+    // This will change the styling for updated cells in grid.
+
+    for (let i = 0; i < 9; i++) {
+      for (let j = 0; j < 9; j++) {
+        if (uploadedGrid[i][j] !== '-') {
+          let inputCell = document.getElementById(`R${i}C${j}`);
+          if (!inputCell.className.includes("bold")) {
+            inputCell.className = inputCell.className.replace("cell-input-","cell-input-bold-");
+          }
+        }
+      }
+    }
+    this.setState(
+      {
+        grid : uploadedGrid.map(arr => [...arr]),
+        puzzleGrid : uploadedGrid.map(arr => [...arr]),
+        timeTaken : -2
+        }
+    );
   }
+
+  setDarkMode = (value) => {
+
+    // This function updates state variable "darkMode" with "value".
+
+    this.setState({darkMode : value});
+  }
+
   render() {
+
+    // "blockifiedGrid" variable contains blocks, each in the form of an array. Each block array contains cells.
+    // "hasDigits" variable stores boolean value depending upon whether the sudoku grid has digits or not.
+    // "completeGrid" variable stores boolean value depending upon whether the sudoku grid is full or not.
+    // "notSolved" variable stores boolean value depending upon whether the sudoku grid is solved or not.
+    // "validGrid" variable stores boolean value depending upon whether the sudoku grid is valid or not.
+    // "appClassName" variable changes the classname for div depending upon state variable "darkMode".
+
     let blockifiedGrid = this.blockify(this.state.grid);
     let hasDigits = JSON.stringify(this.state.grid) !== JSON.stringify(this.emptyGrid);
     let completeGrid = JSON.stringify(this.state.grid).indexOf('-') === -1;
     let notSolved = JSON.stringify(this.state.grid) === JSON.stringify(this.state.puzzleGrid);
     let validGrid = this.isValid(this.state.grid.map(arr => [...arr]));
-    let appClassName = "";
-    if (this.state.darkMode) {
-      appClassName = "app-dark";
-    }else {
-      appClassName = "app-light";
-    }
+    let appClassName = this.state.darkMode ? "app-dark" : "app-light";
     return (
-      <div className={appClassName}>
+      <div className = {appClassName}>
         <h1>Sudoku Solver WebApp</h1>
         <Grid 
-          gridchange = {(value,rowNo,colNo) => this.onCellChange(value,rowNo,colNo)} 
+          gridchange = {(value,rowNo,colNo) => this.onCellChange(value,rowNo,colNo)}
           blockifiedgrid = {blockifiedGrid}
           darkmodevalue = {this.state.darkMode}
         />
         <Options 
-          solvesudoku = {this.solveSudoku} 
+          solvesudoku = {this.solveSudoku}
           visualizesolution = {this.visualizeSolution}
-          clearsolution = {this.clearSolution} 
-          cleargrid = {this.clearGrid} 
-          notsolved = {notSolved} 
+          clearsolution = {this.clearSolution}
+          cleargrid = {this.clearGrid}
+          notsolved = {notSolved}
           gridhasdigits = {hasDigits}
           completegrid = {completeGrid}
           validgrid = {validGrid}
           darkmodevalue = {this.state.darkMode}
           sliderstate = {this.state.slider}
           speedadjust = {this.speedAdjust}
+          updatesudokugrid = {this.updateSudokuGrid}
         />
-        <section>
-          <Details timetaken = {this.state.timeTaken} validgrid = {validGrid}/>
-        </section>
-        <DarkMode setdarkmode = {this.setDarkMode} darkmodevalue = {this.state.darkMode} sliderstate = {this.state.slider}/>
+        <Details timetaken = {this.state.timeTaken} validgrid = {validGrid} />
+        <DarkMode setdarkmode = {this.setDarkMode} darkmodevalue = {this.state.darkMode} sliderstate = {this.state.slider} />
       </div>
     );
   }
+
 }
 
 export default App;

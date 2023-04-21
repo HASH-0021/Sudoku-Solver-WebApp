@@ -1,42 +1,32 @@
 .details {
-	width: 530px;
+	width: 400px;
 	margin: 10px auto;
 }
+
 .status {
 	margin: 5px;
 	display: grid;
 	grid-template-columns: 25% 15% 60%;
 }
+
 .status-output {
 	margin: 0;
+	border-radius: 15px;
 	border-style: solid;
 	border-width: 3px;
 }
-.invalid {
-	background-color: #ffa3a3;
-	color: #ff0000;
-}
+
 .valid {
 	background-color: #aed7fc;
 	color: #0000ff;
 }
+
+.invalid {
+	background-color: #ffa3a3;
+	color: #ff0000;
+}
+
 .solved {
 	background-color: #b3ffa0;
 	color: #2d7c00;
-}
-.info {
-	margin: 5px;
-	display: grid;
-	grid-template-columns: 25% 15% 60%;
-}
-.info p,ol {
-	margin: 0;
-}
-.info ol {
-	padding-left: 22px;
-	border-style: solid;
-	border-width: 3px;
-	background-color: #f9fc9f;
-	color: #ff8800;
-	text-align: left;
 }

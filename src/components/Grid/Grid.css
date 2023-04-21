@@ -1,4 +1,4 @@
-.grid-light {
+.grid {
 	width: 504px;
 	height: 504px;
 	margin: 5px auto;
@@ -7,18 +7,14 @@
 	grid-template-rows: 33.33% 33.33% 33.33%;
 	grid-gap: 0;
 	padding: 0;
-	border: 5px solid black;
 	background-color: transparent;
+	border: 8px solid;
 }
-.grid-dark {
-	width: 504px;
-	height: 504px;
-	margin: 5px auto;
-	display: grid;
-	grid-template-columns: 33.33% 33.33% 33.33%;
-	grid-template-rows: 33.33% 33.33% 33.33%;
-	grid-gap: 0;
-	padding: 0;
-	border: 5px solid white;
-	background-color: transparent;
+
+.grid-border-light {
+	border-color: black;
+}
+
+.grid-border-dark {
+	border-color: white;
 }

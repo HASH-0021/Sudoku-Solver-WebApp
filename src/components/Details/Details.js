@@ -7,14 +7,30 @@ const Details = ({timetaken, validgrid}) => {
 
 	let output = null;
 	if (!validgrid) {
-		timetaken = -1;
+		timetaken = -6;
 	}
-	if (timetaken === -2) {
-		output = <div className = "status"><div>Status</div><div>:</div><div className = "valid status-output">Sudoku grid is valid.</div></div>;
-	}else if (timetaken === -1) {
-		output = <div className = "status"><div>Status</div><div>:</div><div className = "invalid status-output">Sudoku grid is invalid.</div></div>;
-	}else {
-		output = <div className = "status"><div>Status</div><div>:</div><div className = "solved status-output">Solved in {timetaken} seconds.</div></div>;
+	switch (timetaken) {
+		case -6 :
+			output = <div className = "status"><div>Status</div><div>:</div><div className = "error-status status-output">Sudoku grid is invalid.</div></div>;
+			break;
+		case -5 :
+			output = <div className = "status"><div>Status</div><div>:</div><div className = "error-status status-output">Sudoku grid has no solution.</div></div>;
+			break;
+		case -4 :
+			output = <div className = "status"><div>Status</div><div>:</div><div className = "normal-status status-output">Sudoku grid is valid.</div></div>;
+			break;
+		case -3 :
+			output = <div className = "status"><div>Status</div><div>:</div><div className = "normal-status status-output">Solving...</div></div>;
+			break;
+		case -2 :
+			output = <div className = "status"><div>Status</div><div>:</div><div className = "normal-status status-output">Visualizing...</div></div>;
+			break;
+		case -1 :
+			output = <div className = "status"><div>Status</div><div>:</div><div className = "success-status status-output">Solved.</div></div>;
+			break;
+		default :
+			output = <div className = "status"><div>Status</div><div>:</div><div className = "success-status status-output">Solved in {timetaken} seconds.</div></div>;
+			break;
 	}
 
 	return (

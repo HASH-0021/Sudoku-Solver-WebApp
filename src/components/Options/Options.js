@@ -6,7 +6,8 @@ const Options = (
 		{
 			solvesudoku, visualizesolution, clearsolution, cleargrid,
 			notsolved, gridhasdigits, completegrid, validgrid,
-			darkmodevalue, sliderstate, speedadjust, updatesudokugrid
+			nopuzzledigits, darkmodevalue, showalloptions, showvisualizationoptions,
+			speedadjust, showsolution, updatesudokugrid
 		}
 	) => {
 
@@ -14,6 +15,7 @@ const Options = (
 	const [buttonClassName,setButtonClassName] = React.useState("");
 	const [showInfo, setShowInfo] = React.useState(false);
 	const [showAlert, setShowAlert] = React.useState(false);
+	const [speedValue,setSpeedValue] = React.useState(50);
 
 	React.useEffect(() => {
 
@@ -24,21 +26,25 @@ const Options = (
 
 	const sliderUpdate = (value) => {
 
-		// This function changes the state variable "sliderValue" to input value. This also calls back "speedadjust" function to App.js.
-		// Minus button styling is changed based on "value" variable value.
+		// This function changes the state variables "sliderValue" and "speedValue" to equal "value" variable value. This also calls back "speedadjust" function to App.js.
+		// Styling for "Minus" and "Plus" buttons is changed based on "value" variable value.
 
 		const minusButton = document.getElementById("minus-button");
+		const plusButton = document.getElementById("plus-button");
 		minusButton.className = value ? buttonClassName : "blocked-button";
+		plusButton.className = value !== 100 ? buttonClassName : "blocked-button"
 		setSliderValue(value);
+		setSpeedValue(value);
 		speedadjust(value);
 	}
 
 	React.useEffect(() => {
 
-		// State variable "sliderValue" is set to '50' whenever the "sliderstate" prop is changed.
+		// State variable "sliderValue" is set to '50' whenever the "showvisualizationoptions" prop is changed.
 
 		setSliderValue(50);
-	},[sliderstate]);
+		setSpeedValue(50);
+	},[showvisualizationoptions]);
 
 	const displayAlert = (text) => {
 
@@ -95,7 +101,7 @@ const Options = (
 
 		// This function reads the file and sends the content to "checkSudokuFormat" function.
 		// This function calls "displayAlert" function with alert text if file type is not '.txt'.
-		// Both event listener for the file input and the input file are removed at the end.
+		// Both, event listener for the file input and the input file, are removed at the end.
 
 		const file = event.target.files[0];
 		if (file.type === "text/plain") {
@@ -123,10 +129,22 @@ const Options = (
 		fileInput.click();
 	}
 
+	const updateSpeedField = (event) => {
+
+		// Text box containing speed value updates the speed slider and the speed of the visualization.
+
+		const updatedValue = Number(event.target.value);
+		if (updatedValue >= 0 && updatedValue <=100) {
+			setSpeedValue(updatedValue);
+			sliderUpdate(updatedValue);
+		}
+	}
+
 	// Info button is visible at all the time.
-	// If the "sliderstate" prop is 'true', then the solve, visualize, clear grid and file upload buttons are hidden, only speed slider is visible.
-	// If the "sliderstate" prop is 'false', then all buttons that were hidden (when it is 'true') can be visible and speed slider will hidden.
-	// Clear grid button will visible only when "gridhasdigits" prop is 'true'.
+	// If the "showvisualizationoptions" prop is 'true', then the solve, visualize, clear grid and file upload buttons are hidden. Show solution and visualization options are visible.
+	// If the "showalloptions" prop is 'true', then all buttons that were hidden (when showvisualtionoptions is 'true') can be visible and visualization options will hidden.
+	// Clear grid button will be visible only when "gridhasdigits" prop is 'true'.
+	// Clear solution button will be visible only when "nopuzzledigits" prop is 'false'
 	// Solve and visualize buttons will be visible only when both sudoku grid is not complete and is valid.
 
 	let clearGridButton = null;
@@ -134,20 +152,26 @@ const Options = (
 	let visualizeButton = null;
 	let speedSlider = null;
 	let fileUploadButton = null;
+	let clearSolutionButton = null;
+	let showSolutionButton = null;
 	const infoButton =	<span>
 							<button className = {`${buttonClassName} info-button`} title = "Info about the app" onClick = {() => setShowInfo(true)}>i</button>
 							{showInfo && <DialogBox dialog = "info" setshowinfo = {(isVisible) => {setShowInfo(isVisible)}} />}
 					    </span>;
-	if (sliderstate) {
-		speedSlider =	<div className = "speed-section">
-							<div>Speed</div>
-							<div>:</div>
-							<div className = "speed-options">
-								<button className = {buttonClassName} id = "minus-button" title = "Decrease speed" onClick = {() => sliderValue ? sliderUpdate(sliderValue-1) : null}>-</button>
-								<input type = "range" min = "0" max = "100" value = {sliderValue} id = "speed-slider" title = {`Current speed level is ${sliderValue}`} onChange = {(event) => sliderUpdate(Number(event.target.value))} />
-								<button className = {buttonClassName} id = "plus-button" title = "Increase speed" onClick = {() => sliderValue !== 100 ? sliderUpdate(sliderValue+1) : null}>+</button>
-							</div>
-						</div>;
+	if (!showalloptions) {
+		if (showvisualizationoptions) {
+			showSolutionButton = <button className = {buttonClassName} title = "Stops visualization and shows solution immediately" onClick = {showsolution}>Show Solution</button>;
+			speedSlider =	<div className = "speed-section">
+								<div>Speed (0-100)</div>
+								<div>:</div>
+								<div className = "speed-options">
+									<button className = {buttonClassName} id = "minus-button" title = "Decrease speed" onClick = {() => sliderValue ? sliderUpdate(sliderValue-1) : null}>-</button>
+									<input type = "range" min = "0" max = "100" value = {sliderValue} id = "speed-slider" title = "Adjust speed slider to change the speed of visualization" onChange = {(event) => sliderUpdate(Number(event.target.value))} />
+									<button className = {buttonClassName} id = "plus-button" title = "Increase speed" onClick = {() => sliderValue !== 100 ? sliderUpdate(sliderValue+1) : null}>+</button>
+									<input type = "text" id = "speed-textbox" title = "Enter the speed value to adjust speed of visualization. Value should be between 0 and 100 inclusively." value = {speedValue} onChange = {updateSpeedField}/>
+								</div>
+							</div>;
+		}
 	}else {
 		fileUploadButton =	<span>
 								<input type = "file"  id = "fileInput" accept = "text/plain" />
@@ -156,6 +180,9 @@ const Options = (
 							</span>;
 		if (gridhasdigits) {
 			clearGridButton = <button className = {buttonClassName} title = "Click to empty the sudoku grid" onClick = {cleargrid}>Clear Grid</button>;
+		}
+		if (!nopuzzledigits) {
+			clearSolutionButton = <button className = {buttonClassName} title = "Click to clear the solved part of sudoku grid" onClick = {clearsolution}>Clear Solution</button>
 		}
 		if (!completegrid && validgrid) {
 			solveButton = <button className = {buttonClassName} title = "Click to solve using recursive backtracking" onClick = {solvesudoku}>Solve</button>;
@@ -169,11 +196,12 @@ const Options = (
 			{visualizeButton}
 			{clearGridButton}
 			{fileUploadButton}
+			{showSolutionButton}
 			{infoButton}
 			{speedSlider}
 	    </div> :
 		<div className = "options">
-			<button className = {buttonClassName} title = "Click to clear the solved part of sudoku grid" onClick = {clearsolution}>Clear Solution</button>
+			{clearSolutionButton}
 			{clearGridButton}
 			{fileUploadButton}
 			{infoButton}

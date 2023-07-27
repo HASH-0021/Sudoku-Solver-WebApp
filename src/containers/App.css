@@ -3,7 +3,7 @@
   text-align: center;
   background-color: black;
   color: white;
-  overflow: scroll;
+  overflow: auto;
 }
 
 .app-light {
@@ -11,7 +11,7 @@
   text-align: center;
   background-color: white;
   color: black;
-  overflow: scroll;
+  overflow: auto;
 }
 
 h1 {

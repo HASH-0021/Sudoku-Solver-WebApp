@@ -1,7 +1,7 @@
 import React from "react";
 import "./Cell.css";
 
-const Cell = ({cellchange, cellvalue, darkmodevalue, boxindex, cellindex}) => {
+const Cell = ({cellchange, cellvalue, darkmodevalue, boxindex, cellindex, shiftfocus}) => {
 
 	// "rowNo" and "colNo" variables are calculated from "boxindex" and "cellindex" props.
 
@@ -63,6 +63,8 @@ const Cell = ({cellchange, cellvalue, darkmodevalue, boxindex, cellindex}) => {
 				value = {cellvalue === '-' ? '' : cellvalue}
 				title = {`R${rowNo+1}C${colNo+1}`}
 				onChange = {updateCell}
+				onKeyDown = {(event) => shiftfocus(rowNo,colNo,event)}
+				onFocus = {(event) => {event.target.select()}}
 		/>
 	);
 

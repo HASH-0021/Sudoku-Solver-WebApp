@@ -24,12 +24,11 @@
 .info-dialog ol {
   padding-left: 22px;
   text-align: left;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .info-dialog ol .sample-grid {
   list-style: none;
-  overflow-y: hidden;
 }
 
 .close-button {

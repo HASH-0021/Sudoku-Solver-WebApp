@@ -2,7 +2,7 @@ import React from "react";
 import Cell from "../Cell/Cell";
 import "./Box.css";
 
-const Box = ({boxchange, block, darkmodevalue, boxindex}) => {
+const Box = ({boxchange, block, darkmodevalue, boxindex, shiftfocus}) => {
 
 	// "cells" variable stores all the cell components.
 	// "boxClass" variable stores all the border classnames to be included for this box.
@@ -14,6 +14,7 @@ const Box = ({boxchange, block, darkmodevalue, boxindex}) => {
 													darkmodevalue = {darkmodevalue}
 													boxindex = {boxindex}
 													cellindex = {index}
+													shiftfocus = {(rowNo,colNo,event) => shiftfocus(rowNo,colNo,event)}
 													/>);
 	const [boxClassName,setBoxClassName] = React.useState("");
 	let boxClass = "";

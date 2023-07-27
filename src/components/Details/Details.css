@@ -16,17 +16,17 @@
 	border-width: 3px;
 }
 
-.valid {
+.normal-status {
 	background-color: #aed7fc;
 	color: #0000ff;
 }
 
-.invalid {
+.error-status {
 	background-color: #ffa3a3;
 	color: #ff0000;
 }
 
-.solved {
+.success-status {
 	background-color: #b3ffa0;
 	color: #2d7c00;
 }

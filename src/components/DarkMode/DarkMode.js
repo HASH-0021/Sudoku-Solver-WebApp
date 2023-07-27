@@ -1,7 +1,7 @@
 import React from "react";
 import './DarkMode.css';
 
-const DarkMode = ({setdarkmode, darkmodevalue, sliderstate}) => {
+const DarkMode = ({setdarkmode, darkmodevalue, showvisualizationoptions}) => {
 
 	// "toggleText", "textClassName" and "toggleTextClassName" variables are changed depending on state variable "isChecked".
 
@@ -28,7 +28,7 @@ const DarkMode = ({setdarkmode, darkmodevalue, sliderstate}) => {
 		setdarkmode(event.target.checked);
 	}
 
-	return sliderstate ?
+	return showvisualizationoptions ?
 		null : 
 		<div className = "dark-mode-section">
 			<div className = {textClassName}>Dark mode</div>

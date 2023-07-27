@@ -11,7 +11,7 @@
 
 .speed-options {
   display: grid;
-  grid-template-columns: 10% 80% 10%;
+  grid-template-columns: 10% 65% 10% 15%;
 }
 
 #minus-button, #plus-button {
@@ -60,12 +60,21 @@
   cursor: pointer;
 }
 
+#speed-textbox {
+  color: inherit;
+  border: 2px solid currentColor;
+  text-align: right;
+  padding: 0 3px;
+  background-color: transparent;
+}
+
 .buttons-light {
 	color: black;
 	margin: 0 2px;
 	background-color: transparent;
 	border: 3px solid black;
 	border-radius: 7px;
+  cursor: pointer;
 }
 
 .buttons-light:hover {
@@ -79,6 +88,7 @@
 	background-color: transparent;
 	border: 3px solid white;
 	border-radius: 7px;
+  cursor: pointer;
 }
 
 .buttons-dark:hover {

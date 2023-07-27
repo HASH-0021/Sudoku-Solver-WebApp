@@ -2,7 +2,7 @@ import React from "react";
 import Box from "../Box/Box";
 import "./Grid.css";
 
-const Grid = ({gridchange, blockifiedgrid, darkmodevalue}) => {
+const Grid = ({gridchange, blockifiedgrid, darkmodevalue, shiftfocus}) => {
 
 	// "boxes" variable stores all the box components.
 
@@ -12,6 +12,7 @@ const Grid = ({gridchange, blockifiedgrid, darkmodevalue}) => {
 															block = {block}
 															darkmodevalue = {darkmodevalue}
 															boxindex = {index}
+															shiftfocus = {(rowNo,colNo,event) => shiftfocus(rowNo,colNo,event)}
 															/>);
 	const [gridClassName,setGridClassName] = React.useState("");
 

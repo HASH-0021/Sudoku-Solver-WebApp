@@ -6,12 +6,14 @@ Webapp to solve any valid sudoku grid. This webapp is created using **ReactJS**.
 - Option to solve the sudoku normally and display the result in the grid.
 - Option to visualize the solving process of sudoku in the grid.
   - Options to adjust the speed of visualization.
+  - Option to show solution is available during visualization. This ends visualization.
 - Option to remove the solved part of the sudoku grid.
 - Option to clear the entire grid.
 - Option to populate the sudoku grid from a `.txt` file.
 - Option to view info about the app.
 - Current status of the sudoku grid is available.
 - **Dark mode** option is available to toggle between light theme and dark theme. *(Default is set to dark theme)*
+- Navigate the grid using 'Tab','Shift+Tab' & 'Arrow' keys.
 
 ## Code Insights
 - [`App`](src/containers/App.js) component is the root component. It renders contents of the webapp.
@@ -50,5 +52,5 @@ Webapp to solve any valid sudoku grid. This webapp is created using **ReactJS**.
     9,-,-,-,1,-,-,-,-
     ```
 - Time taken to solve depends on the sudoku input, browser, os, device, etc. Webapp freezes till the calculation is done in `solveSudoku` function.
-- If the speed is set to 100 during visualization, then code switches to `solveSudoku` function to complete solution as quickly as possible.
+- When 'Visualize' option is selected, the sudoku is solved normally at first and the solution is stored and then the visualization starts. During visualization, if the 'Show Solution' option is selected, then the visulization stops and the stored solution is displayed in the grid.
 - Options are programmatically made available in scenarios that seemed valid. Dark mode section will not be available during visualization.
